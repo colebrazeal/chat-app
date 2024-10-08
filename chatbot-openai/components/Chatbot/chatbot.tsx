@@ -8,7 +8,14 @@ import ChatInput from './ui/chat-input';
 
 
 export default function Chatbot () {
+
     const [showChat, setShowChat] = useState(false);
+    const [useMessage, setUserMessage] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [messages, setMessages] = useState([
+        {role: 'assistant', content: 'Konnichiwa, how may I help yout today?'}
+    ]);
+
     return (
         <>
             <TbMessageChatbot 
@@ -36,8 +43,13 @@ export default function Chatbot () {
 
                                 {/* CHAT CONTAINER */}
                                 <div className='flex flex-col flex-1 items-center p-2 mt-5 overflow-y-auto'>
-                                    <BotMessage />
-                                    <UserMessage />
+                                  {messages && messages.map((m, i) => {
+                                    return m.role === 'assistant' ? (
+                                        <BotMessage {...m} key={i} />
+                                    ) : (
+                                        <UserMessage {...m} key={i} />
+                                    )
+                                  })}
                                 </div>
 
                                 {/* MESSAGE INPUT */}
@@ -51,3 +63,5 @@ export default function Chatbot () {
         </>
     )
 }
+
+// https://www.youtube.com/watch?v=bx0oryJCpSk - Tutorial pt.2
