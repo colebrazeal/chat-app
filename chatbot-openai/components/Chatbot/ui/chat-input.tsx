@@ -25,12 +25,12 @@ export default function ChatInput({userMessage, setUserMessage, handleSendMessag
 
     return (
         <div className="flex space-x-2 items-center justify-center mt-auto fixed bottom-5 w-8/12">
-            <form className="flex items-center justify-center w-full space-x-2" onSubmit={(e) => { e.preventDefault(); sendMessage(); }}>
+            <form onSubmit={handleSendMessage} className="flex items-center justify-center w-full space-x-2" onSubmit={(e) => { e.preventDefault(); sendMessage(); }}>
                 <input 
                     type="text" 
                     placeholder="Type your message here" 
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    value={userMessage}
+                    onChange={(e) => setUserMessage(e.target.value)}
                     onKeyDown={handleKeyDown} // Updated to onKeyDown
                     className="flex h-10 w-full rounded-md border border-[#e5e7eeb] px-3 text-sm text-black"
                 />

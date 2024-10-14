@@ -1,10 +1,12 @@
 'use client';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import {TbMessageChatbot} from 'react-icons/tb' ;
 import BotMessage from './ui/bot-message';
 import UserMessage from './ui/user-message';
 import ChatInput from './ui/chat-input';
 import Image from 'next/image';
+import { chatCompletion } from '@/actions';
+import { error } from 'console';
 
 
 export type Message = {
@@ -15,14 +17,41 @@ export type Message = {
 
 export default function Chatbot () {
 
-    const [useMessage, setUserMessage] = useState('');
+    const [userMessage, setUserMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
         {role: 'Komissa', content: 'Konnichiwa, how may I help yout today?'}
     ]);
 
-    const handleSendMessage = () => {
+    const handleSendMessage = async(e: FormEvent) => {
+        e.preventDefault();
 
+        console.log('USERMESSAGE', UserMessage)
+
+        if (!userMessage) return;
+
+        // Create new message object
+        const newMessage: Message = {role: 'user', content: userMessage};
+        console.log("NEW MESSAGE", newMessage);
+
+        // Update the message state
+        setMessages{(prevMessage) => [...prevMessage, newMessage]};
+        setLoading(true);
+
+        // Request to OpenAI
+        try {
+            // copy of messages
+            const chatMessages = messages.slice(1);
+            console.log("Chat Messages", chatMessages)
+
+            // Call the API
+            const res = await chatCompletion([...chatMessages, newMessage]);
+
+            console.log('RESPONSE', res)
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
