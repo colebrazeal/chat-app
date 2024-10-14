@@ -32,10 +32,11 @@ export default function Chatbot () {
 
         // Create new message object
         const newMessage: Message = {role: 'user', content: userMessage};
+        
         console.log("NEW MESSAGE", newMessage);
 
         // Update the message state
-        setMessages{(prevMessage) => [...prevMessage, newMessage]};
+        setMessages((prevMessage) => [...prevMessage, newMessage]);
         setLoading(true);
 
         // Request to OpenAI
