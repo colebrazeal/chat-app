@@ -1,7 +1,7 @@
 import { FormEvent } from 'react';
 
 type ChatProps = {
-    userMessage: 'string';
+    userMessage: string;
     setUserMessage: (value: string) => void;
     handleSendMessage: (e: FormEvent) => void;
 }
@@ -19,12 +19,10 @@ export default function ChatInput({userMessage, setUserMessage, handleSendMessag
                     type="text" 
                     value={userMessage}
                     onChange={(e) => setUserMessage(e.target.value)}
-                    // onKeyDown={handleKeyDown} // Updated to onKeyDown
                     placeholder="Type your message here" 
                     className="flex h-10 w-full rounded-md border border-[#e5e7eeb] px-3 text-sm text-black"
                 />
                 <button 
-                    type="button" // Prevents form submission
                     className="p-2 bg-pink-200 text-black inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2"
                 >
                     Send

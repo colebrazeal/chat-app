@@ -11,13 +11,13 @@ import { error } from 'console';
 
 export type Message = {
     content: string;
-    role: 'user' | 'assistant' | 'system';
+    role: 'user' | 'Komissa' | 'system';
 }
 
 
 export default function Chatbot () {
 
-    const [userMessage, setUserMessage] = useState('');
+    const [userMessage, setUserMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
         {role: 'Komissa', content: 'Konnichiwa, how may I help yout today?'}
@@ -26,7 +26,7 @@ export default function Chatbot () {
     const handleSendMessage = async(e: FormEvent) => {
         e.preventDefault();
 
-        console.log('USERMESSAGE', UserMessage)
+        console.log('USER MESSAGE', userMessage)
 
         if (!userMessage) return;
 
@@ -86,7 +86,7 @@ export default function Chatbot () {
                                 </div>
 
                                 <ChatInput 
-                                    userMessage={UserMessage}
+                                    userMessage={userMessage}
                                     setUserMessage={setUserMessage}
                                     handleSendMessage={handleSendMessage}
                                 />
