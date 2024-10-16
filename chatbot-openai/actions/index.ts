@@ -17,6 +17,11 @@ export async function chatCompletion(chatMessages: Message[]) {
     const completion = await openAi.chat.completions.create({
         messages: chat,
         model: "gpt-3.5-turbo",
+        usage: {
+            "completion_tokens": 17,
+            "prompt_tokens": 57,
+            "total_tokens": 74
+        }
     });
 
     console.log('COMPLETION', completion.choices[0]);
