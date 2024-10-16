@@ -49,9 +49,22 @@ export default function Chatbot () {
             const res = await chatCompletion([...chatMessages, newMessage]);
 
             console.log('RESPONSE', res)
+            // Handle Response
+            if (res?.choices[0]?.message){
+                setUserMessage("");
+
+                const assistantMessage: Message = {
+                    content: res.choices[0].message.content as string,
+                    role: 'Komissa',
+                }
+
+                setMessages(prevMessages => [...prevMessages, assistantMessage]);
+            }
 
         } catch (error) {
-            console.log(error)
+            console.log('API ERROR', error);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -97,4 +110,4 @@ export default function Chatbot () {
     )
 }
 
-// https://www.youtube.com/watch?v=bx0oryJCpSk - Tutorial pt.2
+// https://www.youtube.com/watch?v=y5eLukU5ur8

@@ -9,10 +9,16 @@ type ChatProps = {
 export default function ChatInput({userMessage, setUserMessage, handleSendMessage}: 
     ChatProps) {
 
+        const onSubmit = (e: FormEvent) => {
+            e.preventDefault(); // Prevent the default form submission behavior
+            handleSendMessage(e); // Call the original send message function
+            setUserMessage(''); // Clear the input field
+        };
+
     return (
         <div className="flex space-x-2 items-center justify-center mt-auto fixed bottom-5 w-8/12">
             <form 
-                onSubmit={handleSendMessage}
+                onSubmit={onSubmit}
                 className="flex items-center justify-center w-full space-x-2"
             >
                 <input 
