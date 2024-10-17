@@ -11,7 +11,7 @@ import { error } from 'console';
 
 export type Message = {
     content: string;
-    role: 'user' | 'Komissa' | 'system';
+    role: 'User' | 'Komissa' | 'system';
 }
 
 
@@ -23,51 +23,73 @@ export default function Chatbot () {
         {role: 'Komissa', content: 'Konnichiwa, how may I help yout today?'}
     ]);
 
-    const handleSendMessage = async(e: FormEvent) => {
+    const handleSendMessage = async (e: FormEvent) => {
         e.preventDefault();
-
-        console.log('USER MESSAGE', userMessage)
-
+    
+        console.log('USER MESSAGE', userMessage);
+    
         if (!userMessage) return;
-
-        // Create new message object
-        const newMessage: Message = {role: 'user', content: userMessage};
-        
+    
+        const newMessage: Message = { role: 'User', content: userMessage };
+    
         console.log("NEW MESSAGE", newMessage);
-
-        // Update the message state
+    
         setMessages((prevMessage) => [...prevMessage, newMessage]);
         setLoading(true);
-
-        // Request to OpenAI
+    
         try {
-            // copy of messages
             const chatMessages = messages.slice(1);
-            console.log("Chat Messages", chatMessages)
-
-            // Call the API
+            console.log("Chat Messages", chatMessages);
+    
             const res = await chatCompletion([...chatMessages, newMessage]);
-
-            console.log('RESPONSE', res)
-            // Handle Response
-            if (res?.choices[0]?.message){
+    
+            console.log('RESPONSE', res);
+    
+            if (res.error) {
+                let customMessage;
+    
+                // Define custom responses based on the error message or type
+                switch (res.message) {
+                    default:
+                        customMessage = "Gomen'nasai, I cannot help right now! My creator needs to purchase more credits xD";
+                }
+    
+                const assistantMessage: Message = {
+                    content: customMessage,
+                    role: 'Komissa',
+                };
+                setMessages(prevMessages => [...prevMessages, assistantMessage]);
+            } else if (res?.choices && res.choices.length > 0 && res.choices[0]?.message) {
                 setUserMessage("");
-
+    
                 const assistantMessage: Message = {
                     content: res.choices[0].message.content as string,
                     role: 'Komissa',
-                }
-
+                };
+    
+                setMessages(prevMessages => [...prevMessages, assistantMessage]);
+            } else {
+                // Handle unexpected response structure
+                const assistantMessage: Message = {
+                    content: "An unexpected error occurred. Please try again.",
+                    role: 'Komissa',
+                };
                 setMessages(prevMessages => [...prevMessages, assistantMessage]);
             }
-
+    
         } catch (error) {
-            console.log('API ERROR', error);
+            console.error('API ERROR', error);
+    
+            const assistantMessage: Message = {
+                content: "An unexpected error occurred. Please try again.",
+                role: 'Komissa',
+            };
+            setMessages(prevMessages => [...prevMessages, assistantMessage]);
         } finally {
             setLoading(false);
         }
     }
-
+    
 
     return (
         <>

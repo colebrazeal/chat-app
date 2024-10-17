@@ -14,16 +14,21 @@ export async function chatCompletion(chatMessages: Message[]) {
         ...chatMessages
     ];
 
-    const completion = await openAi.chat.completions.create({
-        messages: chat,
-        model: "gpt-3.5-turbo",
-        usage: {
-            "completion_tokens": 17,
-            "prompt_tokens": 57,
-            "total_tokens": 74
-        }
-    });
+    try {
+        const completion = await openAi.chat.completions.create({
+            messages: chat,
+            model: "gpt-3.5-turbo"
+        });
 
-    console.log('COMPLETION', completion.choices[0]);
-    return completion;
+        console.log('COMPLETION', completion.choices[0]);
+        return completion;
+    } catch (error) {
+        console.error('OpenAI API Error:', error);
+
+        // Return a structured error response
+        return {
+            error: true,
+            message: error.message || 'An error occurred while processing your request.'
+        };
+    }
 }
