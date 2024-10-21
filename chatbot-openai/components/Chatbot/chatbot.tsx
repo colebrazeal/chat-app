@@ -11,7 +11,7 @@ import { error } from 'console';
 
 export type Message = {
     content: string;
-    role: 'User' | 'Komissa' | 'system';
+    role: 'user' | 'assistant' | 'system';
 }
 
 
@@ -20,30 +20,23 @@ export default function Chatbot () {
     const [userMessage, setUserMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
-        {role: 'Komissa', content: 'Konnichiwa, how may I help yout today?'}
+        {role: 'assistant', content: 'Konnichiwa, how may I help yout today?'}
     ]);
 
     const handleSendMessage = async (e: FormEvent) => {
         e.preventDefault();
     
-        console.log('USER MESSAGE', userMessage);
-    
         if (!userMessage) return;
     
-        const newMessage: Message = { role: 'User', content: userMessage };
-    
-        console.log("NEW MESSAGE", newMessage);
+        const newMessage: Message = { role: 'user', content: userMessage };
     
         setMessages((prevMessage) => [...prevMessage, newMessage]);
         setLoading(true);
     
         try {
             const chatMessages = messages.slice(1);
-            console.log("Chat Messages", chatMessages);
     
             const res = await chatCompletion([...chatMessages, newMessage]);
-    
-            console.log('RESPONSE', res);
     
             if (res.error) {
                 let customMessage;
@@ -56,7 +49,7 @@ export default function Chatbot () {
     
                 const assistantMessage: Message = {
                     content: customMessage,
-                    role: 'Komissa',
+                    role: 'assistant',
                 };
                 setMessages(prevMessages => [...prevMessages, assistantMessage]);
             } else if (res?.choices && res.choices.length > 0 && res.choices[0]?.message) {
@@ -64,7 +57,7 @@ export default function Chatbot () {
     
                 const assistantMessage: Message = {
                     content: res.choices[0].message.content as string,
-                    role: 'Komissa',
+                    role: 'assistant',
                 };
     
                 setMessages(prevMessages => [...prevMessages, assistantMessage]);
@@ -72,7 +65,7 @@ export default function Chatbot () {
                 // Handle unexpected response structure
                 const assistantMessage: Message = {
                     content: "An unexpected error occurred. Please try again.",
-                    role: 'Komissa',
+                    role: 'assistant',
                 };
                 setMessages(prevMessages => [...prevMessages, assistantMessage]);
             }
@@ -82,7 +75,7 @@ export default function Chatbot () {
     
             const assistantMessage: Message = {
                 content: "An unexpected error occurred. Please try again.",
-                role: 'Komissa',
+                role: 'assistant',
             };
             setMessages(prevMessages => [...prevMessages, assistantMessage]);
         } finally {
@@ -100,7 +93,7 @@ export default function Chatbot () {
             />
 
     {/* <Image
-    src="/images/komissa.jpg"
+    src="/images/assistant.jpg"
     alt="Description"
     width={500} 
     height={300} 
@@ -112,10 +105,11 @@ export default function Chatbot () {
                                 {/* CHAT CONTAINER */}
                                 <div className='flex flex-col p-2 mt-5 overflow-y-auto text-white w-8/12 fixed bottom-16'>
                                   {messages && messages.map((m, i) => {
-                                    return m.role === 'Komissa' ? (
-                                        <BotMessage {...m} key={i} />
+                                    const displayName = m.role === 'assistant' ? 'Komissa' : 'User';
+                                    return m.role === 'assistant' ? (
+                                        <BotMessage {...m} key={i} displayName={displayName} />
                                     ) : (
-                                        <UserMessage {...m} key={i} />
+                                        <UserMessage {...m} key={i} displayName={displayName} />
                                     )
                                   })}
                                 </div>
