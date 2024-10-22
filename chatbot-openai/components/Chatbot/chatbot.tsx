@@ -86,20 +86,6 @@ export default function Chatbot () {
 
     return (
         <>
-            <TbMessageChatbot 
-            color='pink'
-            size={64}
-            className='fixed left-2 bottom-[calc(1rem)] hover:cursor-pointer'
-            />
-
-    {/* <Image
-    src="/images/assistant.jpg"
-    alt="Description"
-    width={500} 
-    height={300} 
-    className='justify-center'
-  /> */}
-
                     <div className='flex justify-center h-full items-center '>
 
                                 {/* CHAT CONTAINER */}
@@ -125,5 +111,3 @@ export default function Chatbot () {
         </>
     )
 }
-
-// https://www.youtube.com/watch?v=y5eLukU5ur8
