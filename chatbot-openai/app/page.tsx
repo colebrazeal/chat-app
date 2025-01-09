@@ -8,7 +8,7 @@ export default function Home() {
             <div className="flex items-center justify-center pt-12">
               <div className='flex justify-center items-center p-1.5 w-12 h-12 border border-black bg-pink-200 rounded-full mr-2 relative overflow-hidden'>
                   <Image
-                      src="/images/komissa.jpg"
+                      src="./images/komissa.jpg"
                       alt=""
                       layout="fill"
                       objectFit="cover"
