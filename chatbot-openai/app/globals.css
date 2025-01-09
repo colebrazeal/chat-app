@@ -24,4 +24,15 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Hide scrollbar for all containers */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  scrollbar-width: none; /* For Firefox */
+}
+
 }

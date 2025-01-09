@@ -6,7 +6,7 @@ import Image from 'next/image';
 export default function BotMessage ({ content, displayName}: Message ) {
     return (
         <div className='flex w-full my-2'>
-            <div className='flex justify-center items-center p-1.5 w-8 h-8 border border-black bg-pink-200 rounded-full mr-2 relative overflow-hidden'>
+            <div className='flex justify-center items-center p-4 w-8 h-8 border border-black bg-pink-200 rounded-full mr-2 relative overflow-hidden'>
                 <Image
                     src="/images/komissa.jpg"
                     alt=""
