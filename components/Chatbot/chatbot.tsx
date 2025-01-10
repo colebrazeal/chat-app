@@ -34,28 +34,19 @@ export default function Chatbot() {
     setLoading(true);
 
     try {
-      const chatMessages: Message[] = messages.slice(1).map(m => ({
-        role: m.role,
-        content: m.content,
-        name: m.name || undefined, // Ensure the name is passed correctly (or omitted if not present)
-      }));
-      
+      const chatMessages = messages.slice(1);
 
       const res = await chatCompletion([...chatMessages, newMessage]);
 
-      if (res.error) {
-        let customMessage;
-
-        // Define custom responses based on the error message or type
-        switch (res.message) {
-          default:
-            customMessage = "Gomen'nasai, I cannot help right now! My creator needs to purchase more credits xD";
-        }
+      // Fixing the res.error and res.message issue
+      if (res?.choices && res.choices.length > 0 && res.choices[0]?.message) {
+        setUserMessage("");  // Clear the user input after sending
 
         const assistantMessage: Message = {
-          content: customMessage,
+          content: res.choices[0].message.content as string,
           role: 'assistant',
         };
+
         setMessages(prevMessages => [...prevMessages, assistantMessage]);
       } else if (res?.choices && res.choices.length > 0 && res.choices[0]?.message) {
         setUserMessage("");
