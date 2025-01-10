@@ -1,4 +1,3 @@
-import {RiRobot3Line} from 'react-icons/ri';
 import { Message } from '../chatbot';
 import Image from 'next/image';
 

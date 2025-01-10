@@ -1,12 +1,9 @@
 'use client';
 import { FormEvent, useState, useEffect, useRef } from 'react';
-import { TbMessageChatbot } from 'react-icons/tb';
 import BotMessage from './ui/bot-message';
 import UserMessage from './ui/user-message';
 import ChatInput from './ui/chat-input';
-import Image from 'next/image';
 import { chatCompletion } from '@/actions';
-import { error } from 'console';
 
 export type Message = {
   content: string;
@@ -24,6 +21,8 @@ export default function Chatbot() {
 
   const handleSendMessage = async (e: FormEvent) => {
     e.preventDefault();
+
+    
 
     if (!userMessage) return;
 
@@ -105,6 +104,9 @@ export default function Chatbot() {
               <UserMessage {...m} key={i} displayName={displayName} />
             );
           })}
+
+            {loading && <div className="loading-indicator">Loading...</div>}
+
         </div>
 
         {/* MESSAGE INPUT */}
