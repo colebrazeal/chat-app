@@ -6,9 +6,11 @@ import ChatInput from './ui/chat-input';
 import { chatCompletion } from '@/actions';
 
 export type Message = {
-  content: string;
   role: 'user' | 'assistant' | 'system';
+  content: string;
+  name?: string; // Optional name property
 }
+
 
 export default function Chatbot() {
   const [userMessage, setUserMessage] = useState('');
@@ -32,7 +34,12 @@ export default function Chatbot() {
     setLoading(true);
 
     try {
-      const chatMessages = messages.slice(1);
+      const chatMessages: Message[] = messages.slice(1).map(m => ({
+        role: m.role,
+        content: m.content,
+        name: m.name || undefined, // Ensure the name is passed correctly (or omitted if not present)
+      }));
+      
 
       const res = await chatCompletion([...chatMessages, newMessage]);
 

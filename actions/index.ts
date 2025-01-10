@@ -6,29 +6,23 @@ const openAi = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
-export async function chatCompletion(chatMessages: Message[]) {
-    console.log('FROM BACKEND', chatMessages);
-    
-    const chat = [
-        {role: 'system', content: 'You are a helpful assistant'},
-        ...chatMessages
-    ];
-
+export const chatCompletion = async (messages: Message[]) => {
     try {
-        const completion = await openAi.chat.completions.create({
-            messages: chat,
-            model: "gpt-3.5-turbo"
-        });
-
-        console.log('COMPLETION', completion.choices[0]);
-        return completion;
+      const chatMessages = messages.map(msg => ({
+        role: msg.role,
+        content: msg.content,
+        name: msg.name || undefined,  // Optional name field
+      }));
+  
+      const res = await openAi.chat.completions.create({
+        messages: chatMessages,
+        model: "gpt-3.5-turbo",
+      });
+  
+      return res;
     } catch (error) {
-        console.error('OpenAI API Error:', error);
-
-        // Return a structured error response
-        return {
-            error: true,
-            message: error.message || 'An error occurred while processing your request.'
-        };
+      console.error("Error in chatCompletion:", error);
+      throw error;
     }
-}
+  };
+  
