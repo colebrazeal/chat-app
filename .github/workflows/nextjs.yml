@@ -29,39 +29,33 @@ jobs:
         with:
           node-version: "20"
 
-      # Step 3: Cache node_modules
-      - name: Cache node_modules
-        uses: actions/cache@v3
+      # Step 3: Cache npm dependencies and Next.js build cache
+      - name: Cache npm dependencies and Next.js build cache
+        uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          # Cache npm dependencies and .next cache directory
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/.next/cache
+          # Generate a new cache when package-lock.json or source files change
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          # Restore cache if only the source files have changed
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       # Step 4: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 5: Cache the Next.js build output
-      - name: Cache Next.js build output
-        uses: actions/cache@v3
-        with:
-          path: |
-            .next
-            out
-          key: ${{ runner.os }}-next-build-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-next-build-
-
-      # Step 6: Build the Next.js app
+      # Step 5: Build the Next.js app
       - name: Build Next.js app
         run: npm run build
 
-      # Step 7: Export the static site
+      # Step 6: Export the static site
       - name: Export static site
         run: npm run export
 
-      # Step 8: Upload the artifact for deployment to GitHub Pages
+      # Step 7: Upload the artifact for deployment to GitHub Pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -71,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      # Step 9: Deploy to GitHub Pages
+      # Step 8: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
