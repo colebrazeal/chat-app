@@ -97,7 +97,7 @@ export default function Chatbot() {
           {messages && messages.map((m, i) => {
             const displayName = m.role === 'assistant' ? 'Komissa' : 'User';
             return m.role === 'assistant' ? (
-              <BotMessage {...m} key={i} displayName={displayName} />
+              <BotMessage {...m} key={i} displayName={displayName} /> //theres something wrong here
             ) : (
               <UserMessage {...m} key={i} displayName={displayName} />
             );
