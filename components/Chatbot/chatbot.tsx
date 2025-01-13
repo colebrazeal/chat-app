@@ -11,7 +11,6 @@ export type Message = {
   name?: string; // Optional name property
 }
 
-
 export default function Chatbot() {
   const [userMessage, setUserMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,8 +22,6 @@ export default function Chatbot() {
 
   const handleSendMessage = async (e: FormEvent) => {
     e.preventDefault();
-
-    
 
     if (!userMessage) return;
 
@@ -38,17 +35,7 @@ export default function Chatbot() {
 
       const res = await chatCompletion([...chatMessages, newMessage]);
 
-      // Fixing the res.error and res.message issue
       if (res?.choices && res.choices.length > 0 && res.choices[0]?.message) {
-        setUserMessage("");  // Clear the user input after sending
-
-        const assistantMessage: Message = {
-          content: res.choices[0].message.content as string,
-          role: 'assistant',
-        };
-
-        setMessages(prevMessages => [...prevMessages, assistantMessage]);
-      } else if (res?.choices && res.choices.length > 0 && res.choices[0]?.message) {
         setUserMessage("");
 
         const assistantMessage: Message = {
@@ -58,14 +45,12 @@ export default function Chatbot() {
 
         setMessages(prevMessages => [...prevMessages, assistantMessage]);
       } else {
-        // Handle unexpected response structure
         const assistantMessage: Message = {
           content: "An unexpected error occurred. Please try again.",
           role: 'assistant',
         };
         setMessages(prevMessages => [...prevMessages, assistantMessage]);
       }
-
     } catch (error) {
       console.error('API ERROR', error);
 
@@ -79,7 +64,6 @@ export default function Chatbot() {
     }
   }
 
-  // Scroll to the bottom whenever new messages are added
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -97,14 +81,13 @@ export default function Chatbot() {
           {messages && messages.map((m, i) => {
             const displayName = m.role === 'assistant' ? 'Komissa' : 'User';
             return m.role === 'assistant' ? (
-              <BotMessage {...m} key={i} displayName={displayName} /> //theres something wrong here
+              <BotMessage {...m} key={i} displayName={displayName} />
             ) : (
               <UserMessage {...m} key={i} displayName={displayName} />
             );
           })}
 
-            {loading && <div className="loading-indicator">Loading...</div>}
-
+          {loading && <div className="loading-indicator">Loading...</div>}
         </div>
 
         {/* MESSAGE INPUT */}
