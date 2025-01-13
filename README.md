@@ -126,4 +126,6 @@ This project is open-source and available under the [MIT License](LICENSE).
 - **Next.js** and **TypeScript** for making it easy to build robust, scalable web applications.
 - **Komissa** from the anime **Psycho-Pass**, the inspiration behind the AI character.
 
+
+- Cole Brazeal
 ---
